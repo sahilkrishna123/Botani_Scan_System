@@ -1,0 +1,51 @@
+# Virtual environment
+
+venv/
+
+# Byte-compiled / optimized / DLL files
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs
+
+- .log
+
+# Local configuration
+
+instance/
+.env
+
+# Compiled Python files
+
+- .pyc
+
+# Compiled C extensions
+
+- .so
+
+# Database
+
+db.sqlite
+
+# User-specific files
+
+.vscode/
+.idea/
+
+# Environment variables file
+
+.env
+
+# Flask generated files
+
+**init**.pyc
+.vercel
+
+disease_detection_model_3_0.h5
+
+leaf_classification_model_4_0.h5
+
+water_level_model_1_0.h5

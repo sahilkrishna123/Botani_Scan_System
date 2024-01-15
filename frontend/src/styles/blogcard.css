@@ -1,0 +1,109 @@
+/* blogcard.css */
+
+/* Styles for card titles */
+.card-title {
+  color: rgb(0, 0, 0);
+  font-size: 40px;
+}
+
+/* Styles for card text */
+.card-text {
+  font-size: 20px;
+}
+
+/* Hover effect for card titles */
+.card-title:hover {
+  text-decoration: underline;
+}
+
+/* Styles for Featured Blogs List titles */
+.featured-list-blog-title {
+  color: black;
+}
+
+/* Hover effect for Featured Blogs List titles */
+.featured-list-blog-title:hover {
+  text-decoration: underline;
+}
+
+/* Styles for Featured Blogs List container */
+.featured-list-blog {
+  display: flex;
+  align-items: center;
+}
+
+/* Styles for Featured Blogs List content */
+.featured-list-blog-content {
+  display: flex;
+  align-items: center;
+}
+
+/* Styles for Featured Blogs List images */
+.featured-list-blog-image {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+/* Styles for main featured blog section */
+.main-feature-blog {
+  /* Add styles as needed */
+}
+
+/* Hover effect for card images in Featured Blog and Featured Blogs List */
+.card-img-top:hover,
+.featured-list-blog-image:hover {
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Styles for remaining blog titles */
+.remaining-card-title {
+  font-size: 20px;
+}
+
+/* Hover effect for remaining blog titles */
+.remaining-card-title:hover {
+  text-decoration: underline;
+}
+
+/* Styles for remaining blogs section */
+.remaining-blogs {
+  margin-top: 80px !important;
+}
+
+/* Styles for remaining blog text */
+.remaining-card-text {
+  font-size: 15px;
+}
+
+/* Media queries for responsiveness on different device sizes */
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  /* Adjust font sizes as needed */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  /* Adjust font sizes and other styles for medium devices */
+  .remaining-blogs {
+      margin-top: 50px !important;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  /* Adjust font sizes and other styles for extra small devices */
+  .remaining-blogs {
+      margin-top: 30px !important;
+  }
+}
+
+/* Add hover effect to the image in the Featured Blog */
+.card-img-top:hover,
+.featured-list-blog-image:hover {
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
