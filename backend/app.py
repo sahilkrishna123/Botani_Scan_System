@@ -14,11 +14,16 @@ from keras.preprocessing import image
 app = Flask(__name__)
 CORS(app)
 
-# Define class labels
+# Define class labels for leaf classification
 class_labels_of_classification = {0: 'Apple Leaf', 1: 'Grape Leaf', 2: 'Tomato Leaf'}
-class_labels_of_disease_detection = {0: 'Apple Black Rot Disease', 2: 'Healthy Apple', 1: 'Apple Scab Disease', 3: 'Grape Esca (Black Measles) Disease',5: 'Healthy Grape', 4:'Grape Leaf Blight Disease', 6:'Tomato Early Blight Disease',8: 'Healthy Tomato' ,7:'Tomato Leaf Mold Disease' }
-class_labels_of_water = {0: 'Dead Leaf', 1: 'Healthy Leaf', 2: 'Unhealthy Leaf'}
 
+# Define class labels for disease detection
+class_labels_of_disease_detection = {0: 'Apple Black Rot Disease', 2: 'Healthy Apple', 1: 'Apple Scab Disease', 
+                                     3: 'Grape Esca (Black Measles) Disease', 5: 'Healthy Grape', 4: 'Grape Leaf Blight Disease', 
+                                     6: 'Tomato Early Blight Disease', 8: 'Healthy Tomato', 7: 'Tomato Leaf Mold Disease'}
+
+# Define class labels for water estimation
+class_labels_of_water = {0: 'Dead Leaf', 1: 'Healthy Leaf', 2: 'Unhealthy Leaf'}
 
 # Load the classification model
 model_path_classification = 'leaf_classification_model_4_0.h5'
@@ -35,7 +40,6 @@ model_path_water = 'water_level_model_1_0.h5'
 model_water = load_model(model_path_water)
 print(f"Model loaded successfully from {model_path_water}")
 
-
 # Define is_black_and_white function at the beginning
 def is_black_and_white(img_array):
     # Check if all values in the channel are the same
@@ -43,12 +47,10 @@ def is_black_and_white(img_array):
     return np.all(img_array[:,:,0] == img_array[:,:,1]) and np.all(img_array[:,:,1] == img_array[:,:,2])
     print("function is running2")
 
+# Warning message for black and white images
+warning_msg = "The image is black and white, processing may not be accurate. Please upload a colorful image."
 
-
-warning_msg = "The image is black and white, processing may not be accurate. Please upload colourful image."
-
-
-# ======================  Leaf Classification    ===========================
+# ====================== Leaf Classification ===========================
 
 def preprocess_image_classification(img):
     try:
@@ -60,7 +62,6 @@ def preprocess_image_classification(img):
         # Check if the image has 4 channels (RGBA), and convert it to RGB
         if img_array.shape[-1] == 4:
             img_array = cv2.cvtColor(img_array.astype(np.uint8), cv2.COLOR_RGBA2RGB)
-
 
         # Check if the image is black and white using custom function
         if is_black_and_white(img_array):
@@ -74,7 +75,6 @@ def preprocess_image_classification(img):
         
     except Exception as e:
         raise ValueError(f"Error during image preprocessing: {str(e)}")
-
 
 def predict_image_classification(img, model_classification):
     try:
@@ -94,8 +94,6 @@ def predict_image_classification(img, model_classification):
     except Exception as e:
         raise ValueError(f"Error during image prediction: {str(e)}")
 
-
-
 # ========================== Disease Detection ===============================
 
 def preprocess_image_disease(img):
@@ -109,7 +107,6 @@ def preprocess_image_disease(img):
         if img_array.shape[-1] == 4:
             img_array = cv2.cvtColor(img_array.astype(np.uint8), cv2.COLOR_RGBA2RGB)
 
-
         # Check if the image is black and white using custom function
         if is_black_and_white(img_array):
             print("Warning: Preprocess: The image is black and white. Further processing may not be accurate.")
@@ -122,7 +119,6 @@ def preprocess_image_disease(img):
         
     except Exception as e:
         raise ValueError(f"Error during image preprocessing: {str(e)}")
-
 
 def predict_image_disease(img, model_disease):
     try:
@@ -142,12 +138,12 @@ def predict_image_disease(img, model_disease):
     except Exception as e:
         raise ValueError(f"Error during image prediction: {str(e)}")
 
-
 # ========================== Water Estimation ===============================
 
 def preprocess_image_water(img):
     try:
-        img = img.resize((500, 500))
+        img = img.resize((500, 500))  # Resize the image
+
         # Convert the image to a NumPy array
         img_array = image.img_to_array(img)
 
@@ -155,7 +151,6 @@ def preprocess_image_water(img):
         if img_array.shape[-1] == 4:
             img_array = cv2.cvtColor(img_array.astype(np.uint8), cv2.COLOR_RGBA2RGB)
 
-        
         # Check if the image is black and white using custom function
         if is_black_and_white(img_array):
             print("Warning: Preprocess(W): The image is black and white. Further processing may not be accurate.")
@@ -168,7 +163,6 @@ def preprocess_image_water(img):
         
     except Exception as e:
         raise ValueError(f"Error during image preprocessing: {str(e)}")
-
 
 def predict_image_water(img, model_water):
     try:
@@ -188,8 +182,8 @@ def predict_image_water(img, model_water):
     except Exception as e:
         raise ValueError(f"Error during image prediction: {str(e)}")
 
+# ========================== API Routes ===========================
 
-#==============================API Routes==========================
 @app.route('/')
 def hello():
     return 'Hello, Flask!'
@@ -232,9 +226,8 @@ def classify():
         return jsonify({"error": str(ve)}), 400
 
     except Exception as e:
-        return ("An error occurred:", str(e))
-        # return jsonify({"error": "An error occurred"}), 500
-
+        print("An error occurred:", str(e))
+        return jsonify({"error": "An error occurred"}), 500
 
 @app.route('/disease_detect', methods=['POST'])
 def disease_detect():
@@ -277,8 +270,6 @@ def disease_detect():
         print("An error occurred:", str(e))
         return jsonify({"error": "An error occurred"}), 500
 
-
-
 @app.route('/water_estimation', methods=['POST'])
 def water_estimation():
     try:
@@ -319,8 +310,3 @@ def water_estimation():
     except Exception as e:
         print("An error occurred:", str(e))
         return jsonify({"error": "An error occurred"}), 500
-
-
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
